@@ -9,17 +9,21 @@ let videoContainer = document.querySelector(".video-container");
 label.style.display = "none";
 
 vidInp.addEventListener("change", (e) => {
-    let file = e.target.files[0];
-    console.log(file);
-    let str = '';
-    for (let i = 0; i < file.name.length; i++) {
-        if (i > 37) {
-            break;
+    for (let i = 0; i < e.target.files.length; i++) {
+        let file = e.target.files[i];
+        // console.log(file);
+        let str = '';
+        for (let i = 0; i < file.name.length; i++) {
+            if (i > 37) {
+                break;
+            }
+            str = str + file.name[i];
         }
-        str = str + file.name[i];
+        let link = URL.createObjectURL(file);
+        createCard(str, link);
     }
-    let link = URL.createObjectURL(file);
-    createCard(str, link);
+    
+
     document.querySelector("h2").innerText = "Your Playlist";
     placeholder.style.display = "none";
     document.querySelector(".card-container").style.display = "grid";
@@ -57,16 +61,19 @@ let createCard = (name, src) => {
         card.addEventListener("click", videoPlayer);
     }
 
-    console.log(allCards);
+    // console.log(allCards);
 }
 
 let videoToPlay = document.querySelector(".video-player-box video");
 let videoPlayerBox = document.querySelector(".video-player-box");
 document.querySelector(".cross-btn").addEventListener("click", () => {
     videoPlayerBox.style.top = "100%";
-})
+    if(videoToPlay.play) {
+        videoToPlay.pause();
+    }
+});
 function videoPlayer() {
-    console.log(this.firstChild);
+    // console.log(this.firstChild);
     videoToPlay.src = this.firstChild.src;
     videoPlayerBox.style.top = "0";
     // this.firstChild.currentTime = 0;
