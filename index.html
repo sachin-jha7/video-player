@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Player : JavaScript</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="container">
+        <h2>Video Player</h2>
+
+        <div class="card-container"></div>
+
+        <div class="video-input-box">
+            <label class="btn" for="file-input">Create Your Playlist</label>
+            <input id="file-input" type="file" accept="video/*,video/webm,video/mkv" hidden>
+        </div>
+        <label class="clone-btn" for="file-input">
+            &plus;
+        </label>
+        <div class="video-player-box">
+
+            <button class="cross-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" height="45px" viewBox="0 -960 960 960" width="45px"
+                    fill="#FFFFFF">
+                    <path
+                        d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z" />
+                </svg>
+            </button>
+
+            <video controls></video>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+
+</html>
