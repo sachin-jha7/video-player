@@ -5,6 +5,7 @@
 }
 
 body {
+    /* overflow: hidden; */
     background-color: #000;
     color: #fff;
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
@@ -114,21 +115,146 @@ body {
     justify-content: center;
     align-items: center;
     background-color: #000;
+    transition: top 0.3s ease;
+}
+
+.rotate-landscape {
+    transform: rotate(90deg);
+    width: 100vw;
+    height: 100vh;
 }
 
 .video-player-box video {
     width: 100%;
     /* height: ; */
-    height: 50%;
+    height: 100%;
+    /* border: 1px solid tomato; */
 }
 
-button {
-    background: none;
+.cross-btn {
+    background: transparent;
     border: none;
     /* display: inline-block; */
     position: fixed;
     top: 10px;
     left: 10px;
+}
+
+.vol-brightness-container {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    position: fixed;
+}
+
+.vol-brightness-container div {
+    height: fit-content;
+    width: fit-content;
+    /* border: 1px solid chartreuse; */
+    transform: rotate(270deg);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    opacity: 0;
+}
+
+.vol-brightness-container .left svg {
+    transform: rotate(90deg);
+}
+
+.video-player-box .wrapper {
+    /* background-color: #323232; */
+    background: transparent;
+    width: 100%;
+    /* position: relative; */
+    position: fixed;
+    padding: 10px;
+    /* top: 75%; */
+    bottom: 0;
+    /* top: 0; */
+}
+
+.wrapper .duration-box {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.duration-box .duration-info {
+    width: 95%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.progress-bar {
+    width: 95%;
+    height: 5px;
+    margin: 20px auto;
+    background-color: gainsboro;
+    position: relative;
+    border-radius: 10px;
+}
+
+
+.progress-bar .ball {
+    height: 15px;
+    width: 15px;
+    background-color: dodgerblue;
+    border-radius: 50%;
+    position: absolute;
+    top: 50%;
+    /* left: 2%; */
+    /* top: -5px; */
+    transform: translate(-50%, -50%);
+}
+
+.progress-fill {
+    --progress-width: 0%;
+    position: relative;
+}
+
+.progress-fill::before {
+    content: "";
+    width: var(--progress-width);
+    height: 5px;
+    background-color: dodgerblue;
+    position: absolute;
+    left: 0;
+    border-radius: 10px;
+}
+
+.control-panel {
+    display: flex;
+    gap: 20px;
+    height: fit-content;
+    width: fit-content;
+    margin: 20px auto;
+    /* border: 1px solid chocolate; */
+}
+
+.control-panel button {
+    background: transparent;
+    border: none;
+    color: #fff;
+    font-size: 25px;
+}
+
+.screen-size-btn {
+    position: absolute;
+    left: 95%;
+    top: 73px;
+    transform: translateX(-95%);
+}
+
+.screen-size-btn button {
+    background-color: transparent;
+    border: none;
+    /* display: block; */
+}
+
+.screen-size-btn .exit-fullscreen {
+    display: none;
 }
 
 @media (max-width: 522px) {
