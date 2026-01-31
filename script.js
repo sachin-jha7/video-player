@@ -192,3 +192,7 @@ videoPlayerBox.addEventListener("touchstart", () => {
     clearTimeout(timer);
     hideControls();
 });
+document.querySelector(".progress-bar").addEventListener("click", (event) => {
+    let width = document.querySelector(".progress-bar").clientWidth;
+    videoToPlay.currentTime = (event.offsetX / width) * videoToPlay.duration;
+});
