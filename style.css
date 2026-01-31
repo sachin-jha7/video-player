@@ -118,11 +118,6 @@ body {
     transition: top 0.3s ease;
 }
 
-.rotate-landscape {
-    transform: rotate(90deg);
-    width: 100vw;
-    height: 100vh;
-}
 
 .video-player-box video {
     width: 100%;
@@ -138,6 +133,7 @@ body {
     position: fixed;
     top: 10px;
     left: 10px;
+    z-index: 99;
 }
 
 .vol-brightness-container {
@@ -173,6 +169,7 @@ body {
     /* top: 75%; */
     bottom: 0;
     /* top: 0; */
+    z-index: 99;
 }
 
 .wrapper .duration-box {
