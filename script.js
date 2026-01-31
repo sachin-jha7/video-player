@@ -187,3 +187,8 @@ videoPlayerBox.addEventListener("mousemove", () => {
     clearTimeout(timer);
     hideControls();
 });
+videoPlayerBox.addEventListener("touchstart", () => {
+    document.querySelector(".wrapper").style.bottom = "0";
+    clearTimeout(timer);
+    hideControls();
+});
