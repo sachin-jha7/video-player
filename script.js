@@ -196,3 +196,38 @@ document.querySelector(".progress-bar").addEventListener("click", (event) => {
     let width = document.querySelector(".progress-bar").clientWidth;
     videoToPlay.currentTime = (event.offsetX / width) * videoToPlay.duration;
 });
+
+//  skip video on swiping
+
+document.addEventListener("touchstart", (event) => {
+    // console.log(event.touches[0].clientX);
+    touchStartX = event.touches[0].clientX;
+    startX = event.touches[0].clientX;
+    startY = event.touches[0].clientY;
+
+    const screenWidth = window.innerWidth;
+    side = (startX < screenWidth / 2) ? "left" : "right";
+
+    // console.log(`Touch started on ${side} side`);
+});
+
+document.addEventListener("touchend", (event) => {
+    touchEndX = event.changedTouches[0].clientX;
+    // console.log(event.changedTouches[0].clientX);
+    handleGesture();
+});
+
+function handleGesture() {
+    const horizontalDiff = touchEndX - touchStartX;
+    const swipeThreshold = 50;
+
+    if (Math.abs(horizontalDiff) > swipeThreshold && videoToPlay.src != "") {
+        if (horizontalDiff > 0) {
+            // console.log("swipe right");
+            videoToPlay.currentTime += 10;
+        } else {
+            // console.log("swipe left");
+            videoToPlay.currentTime -= 10;
+        }
+    }
+}
