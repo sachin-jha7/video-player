@@ -1,12 +1,8 @@
 let vidInp = document.querySelector("input");
-// let video = document.querySelector("video");
 let videoName = document.querySelector(".video-name");
 let placeholder = document.querySelector(".video-input-box");
 let label = document.querySelector(".clone-btn");
-let card = document.querySelector(".card");
-let videoContainer = document.querySelector(".video-container");
 
-label.style.display = "none";
 
 vidInp.addEventListener("change", (e) => {
     for (let i = 0; i < e.target.files.length; i++) {
@@ -54,16 +50,27 @@ let createCard = (name, src) => {
 
     let allCards = document.querySelectorAll(".card-container .card");
     for (let card of allCards) {
-        card.removeEventListener("click", videoPlayer);
+        card.removeEventListener("click", setVideoInfo);
     }
     for (let card of allCards) {
-        card.addEventListener("click", videoPlayer);
+        card.addEventListener("click", setVideoInfo);
     }
 
     // console.log(allCards);
 }
 
 let videoToPlay = document.querySelector(".video-player-box video");
+
+function setVideoInfo() {
+    videoToPlay.src = this.firstChild.src;
+    videoPlayerBox.style.top = "0";
+    document.querySelector(".duration-info .right").innerText = formateTime(this.firstChild.duration);
+    videoToPlay.play();
+    playBtn.querySelector("i").classList.replace("fa-play", "fa-pause");
+}
+
+
+
 let videoPlayerBox = document.querySelector(".video-player-box");
 
 document.querySelector(".cross-btn").addEventListener("click", () => {
@@ -71,18 +78,10 @@ document.querySelector(".cross-btn").addEventListener("click", () => {
     videoToPlay.pause();
 });
 
-function videoPlayer() {
-    // console.log(this.firstChild);
-    videoToPlay.src = this.firstChild.src;
-    videoPlayerBox.style.top = "0";
-    document.querySelector(".duration-info .right").innerText = formateTime(this.firstChild.duration);
-    videoToPlay.play();
-    playBtn.querySelector("i").classList.replace("fa-play", "fa-pause");
-    // this.firstChild.currentTime = 0;
-}
+
+// Toggle between play & pause on button click
 
 let playBtn = document.querySelector(".play-btn");
-
 
 playBtn.addEventListener("click", () => {
 
@@ -93,7 +92,6 @@ playBtn.addEventListener("click", () => {
         playBtn.querySelector("i").classList.replace("fa-pause", "fa-play");
 
     }
-
     videoToPlay.paused ? videoToPlay.play() : videoToPlay.pause();
 });
 
@@ -101,6 +99,9 @@ videoToPlay.addEventListener("ended", () => {
 
     playBtn.querySelector("i").classList.replace("fa-pause", "fa-play");
 });
+
+
+// Time conversion function
 
 const formateTime = (time) => {
     let seconds = Math.floor(time % 60);
@@ -117,22 +118,27 @@ const formateTime = (time) => {
     return `${hours}:${minutes}:${seconds}`;
 }
 
+
+// Update duration and move progress ball and increase width of progress-fill
+
 videoToPlay.addEventListener("timeupdate", (event) => {
     let { currentTime, duration } = event.target;
     document.querySelector(".duration-info .left").innerText = formateTime(currentTime);
     document.querySelector(".duration-info .right").innerText = formateTime(duration);
     let percent = (currentTime / duration) * 100;
-    // percent = `${percent}px` - `${15}px`;
+
     document.querySelector(".progress-bar .progress-fill").style.setProperty('--progress-width', percent + '%');
     document.querySelector(".progress-bar .ball").style.left = percent + "%";
-    // document.querySelector(".progress-bar").style.width = `${percent}%`
 });
+
+
+// Enter and Exit Full Screen
 
 let fullScreenEnterBtn = document.querySelector(".fullscreen");
 let exitFullScreenBtn = document.querySelector(".exit-fullscreen");
 
-
 fullScreenEnterBtn.addEventListener("click", () => {
+
     if (videoPlayerBox.requestFullscreen) {
         videoPlayerBox.requestFullscreen();
     } else if (videoPlayerBox.mozRequestFullScreen) {
@@ -140,7 +146,6 @@ fullScreenEnterBtn.addEventListener("click", () => {
     } else if (videoPlayerBox.webkitRequestFullScreen) {
         videoPlayerBox.webkitRequestFullScreen();
     }
-
     fullScreenEnterBtn.style.display = "none";
     exitFullScreenBtn.style.display = "block";
     document.querySelector(".cross-btn").style.display = "none";
@@ -162,6 +167,9 @@ exitFullScreenBtn.addEventListener("click", () => {
     // videoPlayerBox.style.transform = `rotate(-270deg)`;
 });
 
+
+// Skip the video on button click
+
 let forwardBtn = document.querySelector(".forward-btn");
 let backwardBtn = document.querySelector(".backward-btn");
 
@@ -173,37 +181,51 @@ backwardBtn.addEventListener("click", () => {
     videoToPlay.currentTime -= 10;
 });
 
+document.querySelector(".progress-bar").addEventListener("click", (event) => {
+    let width = document.querySelector(".progress-bar").clientWidth;
+    videoToPlay.currentTime = (event.offsetX / width) * videoToPlay.duration;
+});
+
+
+// hide and show the control panel when user hover on the video screen
+
 let timer;
 const hideControls = () => {
     if (videoToPlay.paused) return;
     timer = setTimeout(() => {
         document.querySelector(".wrapper").style.bottom = "-100%";
+        videoToPlay.style.filter = `brightness(100%)`;
     }, 3000);
 }
 hideControls();
 
 videoPlayerBox.addEventListener("mousemove", () => {
     document.querySelector(".wrapper").style.bottom = "0";
+    videoToPlay.style.filter = `brightness(70%)`;
     clearTimeout(timer);
     hideControls();
 });
+
+// for touchscreen device
+
 videoPlayerBox.addEventListener("touchstart", () => {
     document.querySelector(".wrapper").style.bottom = "0";
     clearTimeout(timer);
     hideControls();
 });
-document.querySelector(".progress-bar").addEventListener("click", (event) => {
-    let width = document.querySelector(".progress-bar").clientWidth;
-    videoToPlay.currentTime = (event.offsetX / width) * videoToPlay.duration;
-});
 
-//  skip video on swiping
+
+
+
+// skip the video on swiping left or right
+
+let touchStartX = 0;
+let touchEndX = 0;
+let side = "";
 
 document.addEventListener("touchstart", (event) => {
     // console.log(event.touches[0].clientX);
     touchStartX = event.touches[0].clientX;
-    startX = event.touches[0].clientX;
-    startY = event.touches[0].clientY;
 
     const screenWidth = window.innerWidth;
     side = (startX < screenWidth / 2) ? "left" : "right";
@@ -213,9 +235,10 @@ document.addEventListener("touchstart", (event) => {
 
 document.addEventListener("touchend", (event) => {
     touchEndX = event.changedTouches[0].clientX;
-    // console.log(event.changedTouches[0].clientX);
+
     handleGesture();
 });
+
 
 function handleGesture() {
     const horizontalDiff = touchEndX - touchStartX;
