@@ -140,12 +140,44 @@ let exitFullScreenBtn = document.querySelector(".exit-fullscreen");
 fullScreenEnterBtn.addEventListener("click", () => {
 
     if (videoPlayerBox.requestFullscreen) {
-        videoPlayerBox.requestFullscreen();
+        videoPlayerBox.requestFullscreen().then(() => {
+            if (videoToPlay.videoWidth > videoToPlay.videoHeight) {
+                screen.orientation.lock("landscape")
+                    .then(() => console.log("orientation locked to landsacpe"))
+                    .catch(err => console.log(err));
+            } else {
+                screen.orientation.lock("portrait")
+                    .then(() => console.log("orientation locked to portrait"))
+                    .catch(err => console.log(err));
+            }
+
+        }).catch(err => console.log(err));
     } else if (videoPlayerBox.mozRequestFullScreen) {
-        videoPlayerBox.mozRequestFullScreen();
+        videoPlayerBox.mozRequestFullScreen().then(() => {
+            if (videoToPlay.videoWidth > videoToPlay.videoHeight) {
+                screen.orientation.lock("landscape")
+                    .then(() => console.log("orientation locked to landsacpe"))
+                    .catch(err => console.log(err));
+            } else {
+                screen.orientation.lock("portrait")
+                    .then(() => console.log("orientation locked to portrait"))
+                    .catch(err => console.log(err));
+            }
+        }).catch(err => console.log(err));
     } else if (videoPlayerBox.webkitRequestFullScreen) {
-        videoPlayerBox.webkitRequestFullScreen();
+        videoPlayerBox.webkitRequestFullScreen().then(() => {
+            if (videoToPlay.videoWidth > videoToPlay.videoHeight) {
+                screen.orientation.lock("landscape")
+                    .then(() => console.log("orientation locked to landsacpe"))
+                    .catch(err => console.log(err));
+            } else {
+                screen.orientation.lock("portrait")
+                    .then(() => console.log("orientation locked to portrait"))
+                    .catch(err => console.log(err));
+            }
+        }).catch(err => console.log(err));
     }
+    
     fullScreenEnterBtn.style.display = "none";
     exitFullScreenBtn.style.display = "block";
     document.querySelector(".cross-btn").style.display = "none";
@@ -228,7 +260,7 @@ document.addEventListener("touchstart", (event) => {
     touchStartX = event.touches[0].clientX;
 
     const screenWidth = window.innerWidth;
-    side = (startX < screenWidth / 2) ? "left" : "right";
+    side = (touchStartX < screenWidth / 2) ? "left" : "right";
 
     // console.log(`Touch started on ${side} side`);
 });
